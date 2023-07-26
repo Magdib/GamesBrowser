@@ -5,7 +5,7 @@ import 'package:gamesbrowser/core/constant/Colors.dart';
 import 'package:gamesbrowser/core/function/Dialogs.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-// import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../core/function/checkInternet.dart';
 import '../data/model/GamesModel.dart';
@@ -70,12 +70,12 @@ class GamesDetailesController extends GetxController {
   }
 
   void openDownloadLink() async {
-    // final Uri _url = Uri.parse(game.gameDownloadlink!);
-    // if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
-    //   Get.snackbar("حدث خطأ ما",
-    //       "في حالة أستمرار حدوث الخطأ الرجاء التواصل مع الدعم الفني للتطبيق",
-    //       backgroundColor: AppColors.red);
-    // }
+    final Uri _url = Uri.parse(game.gameDownloadlink!);
+    if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
+      Get.snackbar("حدث خطأ ما",
+          "في حالة أستمرار حدوث الخطأ الرجاء التواصل مع الدعم الفني للتطبيق",
+          backgroundColor: AppColors.red);
+    }
   }
 
   @override
