@@ -20,7 +20,7 @@ class GamesPage extends GetView<GamesController> {
       ),
       body: ListView.separated(
         itemCount: controller.catGames.length,
-        padding: const EdgeInsets.only(top: 8.0, left: 5, right: 5),
+        padding: const EdgeInsets.only(top: 8.0, left: 5, right: 5, bottom: 10),
         separatorBuilder: (context, index) => const SizedBox(
           height: 8,
         ),

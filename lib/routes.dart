@@ -1,6 +1,9 @@
+import 'package:gamesbrowser/controller/AuthController.dart';
 import 'package:gamesbrowser/controller/GamesController.dart';
 import 'package:gamesbrowser/controller/GamesDetailesController.dart';
 import 'package:gamesbrowser/controller/TrailerController.dart';
+import 'package:gamesbrowser/core/middleware/middleware.dart';
+import 'package:gamesbrowser/view/Screens/AuthPage.dart';
 import 'package:gamesbrowser/view/Screens/SettingsPage.dart';
 import 'package:gamesbrowser/view/Screens/GamesPage.dart';
 import 'package:gamesbrowser/view/Screens/HomePage.dart';
@@ -10,7 +13,7 @@ import 'package:gamesbrowser/view/Screens/trailerPage.dart';
 import 'package:get/get.dart';
 
 class AppRoutes {
-  static const String mainPageRoute = "/";
+  static const String mainPageRoute = "/mainPageRoute";
   static const String homePageRoute = "/HomePage";
   static const String gamesPageRoute = "/gamesPage";
   static const String filtersPageRoute = "/SettingsPage";
@@ -19,6 +22,11 @@ class AppRoutes {
 }
 
 List<GetPage<dynamic>>? routes = [
+  GetPage(
+      name: "/",
+      page: () => const AuthPage(),
+      binding: BindingsBuilder.put(() => AuthController()),
+      middlewares: [MyMiddleWare()]),
   GetPage(
     name: AppRoutes.mainPageRoute,
     page: () => const SplashScreen(),
@@ -39,7 +47,7 @@ List<GetPage<dynamic>>? routes = [
       transitionDuration: const Duration(milliseconds: 600)),
   GetPage(
       name: AppRoutes.filtersPageRoute,
-      page: () => SettingsPage(),
+      page: () => const SettingsPage(),
       transition: Transition.upToDown,
       transitionDuration: const Duration(milliseconds: 400)),
   GetPage(

@@ -8,14 +8,15 @@ import 'package:get/get.dart';
 
 import '../../core/constant/Colors.dart';
 
-class SettingsPage extends GetView<HomePageController> {
+class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () => controller.onWillPop(),
-        child: Scaffold(
+    return GetBuilder<HomePageController>(
+      builder: (controller) => WillPopScope(
+          onWillPop: () => controller.onWillPop(),
+          child: Scaffold(
             appBar: AppBar(
               elevation: 0,
               backgroundColor: AppColors.deepgreen,
@@ -28,52 +29,54 @@ class SettingsPage extends GetView<HomePageController> {
                 onPressed: () => controller.onWillPop(),
                 icon: previousPageIcon(),
               ),
-              actions: [
-                IconButton(
-                    onPressed: () => controller.resetSettings(),
-                    icon: const Icon(Icons.refresh))
-              ],
+              actions: controller.changeSaved
+                  ? [
+                      IconButton(
+                          onPressed: () => controller.resetSettings(),
+                          icon: const Icon(Icons.refresh))
+                    ]
+                  : null,
             ),
-            body: GetBuilder<HomePageController>(
-              builder: (controller) => Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: Column(children: <SettingsListTile>[
-                        SettingsListTile(
-                          text: "تحديث البيانات الحالية",
-                          trailText: controller.updateTime,
-                          onTap: () => controller.updateGames(context),
-                        ),
-                        SettingsListTile(
-                          text: "التصنيف حسب الحجم",
-                          trailText: controller.sizeText,
-                          onTap: () => settingsSizeDialog(context),
-                        ),
-                        SettingsListTile(
-                          text: "التصنيف حسب مدة التختيم",
-                          trailText: controller.completeText,
-                          onTap: () => periodDialog(context),
-                        ),
-                        SettingsListTile(
-                          text: "التصنيف حسب حاجة الإنترنت",
-                          trailText: controller.netText,
-                          onTap: () => netDialog(context),
-                        ),
-                      ]),
-                    ),
-                    CustomButton(
-                      text: controller.changeSaved == false
-                          ? "حفظ الإعدادات"
-                          : "جميع الإعدادات محفوظة",
-                      onPressed: controller.changeSaved == false
-                          ? () => controller.saveSettings()
-                          : null,
-                    )
-                  ],
-                ),
+            body: Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Column(children: <SettingsListTile>[
+                      SettingsListTile(
+                        text: "تحديث البيانات الحالية",
+                        trailText: controller.updateTime,
+                        onTap: () => controller.updateGames(context),
+                      ),
+                      SettingsListTile(
+                        text: "التصنيف حسب الحجم",
+                        trailText: controller.sizeText,
+                        onTap: () => settingsSizeDialog(context),
+                      ),
+                      SettingsListTile(
+                        text: "التصنيف حسب مدة التختيم",
+                        trailText: controller.completeText,
+                        onTap: () => periodDialog(context),
+                      ),
+                      SettingsListTile(
+                        text: "التصنيف حسب حاجة الإنترنت",
+                        trailText: controller.netText,
+                        onTap: () => netDialog(context),
+                      ),
+                    ]),
+                  ),
+                  CustomButton(
+                    text: controller.changeSaved == false
+                        ? "تفعيل التصنيفات"
+                        : "التصنيفات مفعلة",
+                    onPressed: controller.changeSaved == false
+                        ? () => controller.saveSettings()
+                        : null,
+                  )
+                ],
               ),
-            )));
+            ),
+          )),
+    );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gamesbrowser/controller/TrailerController.dart';
 import 'package:gamesbrowser/core/constant/Colors.dart';
 import 'package:gamesbrowser/view/Widgets/shared/CustomCachedNetImage.dart';
@@ -12,11 +11,7 @@ class TrailerPage extends GetView<TrailerController> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () {
-        SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-        Get.back();
-        return Future.value(false);
-      },
+      onWillPop: () => controller.onWillPop(),
       child: Center(
         child: YoutubePlayer(
           controller: controller.ytController,
@@ -34,7 +29,7 @@ class TrailerPage extends GetView<TrailerController> {
             RemainingDuration(),
             FullScreenButton(),
           ],
-          onEnded: (metaData) => Get.back(),
+          onEnded: (metaData) => controller.onWillPop(),
           thumbnail: Hero(
               tag: controller.thumbnail,
               child:

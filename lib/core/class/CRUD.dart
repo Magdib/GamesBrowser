@@ -38,31 +38,30 @@ class CRUD {
     }
   }
 
-  // Future<Either<StatusRequest, Map>> postDataWithFiles(
-  //     String linkurl, Map data, File file) async {
-  //   if (await checkinternet()) {
-  //     var request = http.MultipartRequest("POST", Uri.parse(linkurl));
-  //     var length = await file.length();
-  //     var stream = http.ByteStream(file.openRead());
-  //     var multipartFile = http.MultipartFile("image", stream, length,
-  //         filename: basename(file.path));
-  //     request.files.add(multipartFile);
-  //     data.forEach((key, value) {
-  //       request.fields[key] = value;
-  //     });
-  //     log("Sending //File// Request<<");
-  //     var dataRequest = await request.send();
-  //     log("SendingRequest<<");
-  //     var response = await http.Response.fromStream(dataRequest);
-  //     if (response.statusCode == 200 || response.statusCode == 201) {
-  //       Map responseBody = jsonDecode(response.body);
-  //       print(responseBody);
-  //       return Right(responseBody);
-  //     } else {
-  //       return left(StatusRequest.serverfailure);
-  //     }
-  //   } else {
-  //     return const Left(StatusRequest.offlinefailure);
-  //   }
-  // }
+  Future<Either<StatusRequest, Map>> postData(
+      String linkurl, Map<String, dynamic> data) async {
+    Dio dio = Dio(options);
+
+    final formData = FormData.fromMap(data);
+    if (await checkinternet()) {
+      try {
+        log("SendingRequest<<");
+
+        var response = await dio.post(linkurl, data: formData);
+
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          Map responseBody = jsonDecode(response.data);
+          print(responseBody);
+
+          return Right(responseBody);
+        } else {
+          return left(StatusRequest.offlinefailure);
+        }
+      } catch (e) {
+        return const Left(StatusRequest.offlinefailure);
+      }
+    } else {
+      return const Left(StatusRequest.offlinefailure);
+    }
+  }
 }
